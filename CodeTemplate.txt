@@ -1,0 +1,381 @@
+#include<Pinger.h>
+#include<ESP8266WiFi.h>
+#include<vector>
+
+
+    //Internal IP Address
+    class InternalIPAddress
+    {
+        public:
+        short parts[4];
+
+        InternalIPAddress(short p1, short p2, short p3, short p4)
+        {
+            parts[0] = p1;
+            parts[1] = p2;
+            parts[2] = p3;
+            parts[3] = p4;
+        }
+    };
+
+    //Packet rule
+    class PacketRule
+    {
+        private:
+        bool incoming;
+        bool outgoing;
+
+        public:
+        PacketRule(bool inComing, bool outGoing)
+        {
+            incoming = inComing;
+            outgoing = outGoing;
+        }
+
+        inline bool AllowIncoming(){
+            return incoming;
+        }
+
+        inline bool AllowOutgoing(){
+            return outgoing;
+        }
+    };
+
+    //IPv4 address part3
+    class IPAddressPart3
+    {
+        private:
+        PacketRule* rule;
+
+        public:
+        short Value;
+        IPAddressPart3(short value, PacketRule* packetRule)
+        {
+            Value = value;
+            rule = packetRule;
+        }      
+
+        inline bool AllowIncoming()  
+        {
+            return rule->AllowIncoming();
+        }
+
+        inline bool AllowOutgoing()
+        {
+            return rule->AllowOutgoing();
+        }
+
+    };
+
+    //IPv4 address part 2
+    class IPAddressPart2
+    {
+        private:
+        std::vector<IPAddressPart3*> nextParts;
+
+        int GetPosition(short value)
+        {
+            for(int i=0;i<nextParts.size();i++)
+            {
+                if(nextParts.at(i)->Value == value)
+                    return i;
+            }
+            return -1;
+        }
+
+        public:
+        short Value;
+
+        IPAddressPart2(short value)
+        {
+            Value = value;
+        }
+
+        IPAddressPart3* AddPart(short value, PacketRule* rule)
+        {
+            int position = GetPosition(value);
+            if(position>=0)
+                return nextParts.at(position);
+            IPAddressPart3* part =new IPAddressPart3(value,rule);
+            nextParts.push_back(part);
+            position = GetPosition(value);
+            return nextParts.at(position);
+        }
+
+        IPAddressPart3* GetPart(short value)
+        {
+            int position = GetPosition(value);
+            if(position>=0)
+                return nextParts.at(position);
+            IPAddressPart3* part =new IPAddressPart3(256,new PacketRule(false,false));
+            return part;
+        }
+    };
+
+    //IPv4 address part 1
+    class IPAddressPart1
+    {
+        private:
+        std::vector<IPAddressPart2*> nextParts;
+
+        int GetPosition(short value)
+        {
+            for(int i=0;i<nextParts.size();i++)
+            {
+                if(nextParts.at(i)->Value == value)
+                    return i;
+            }
+            return -1;
+        }
+
+        public:
+        short Value;
+
+        IPAddressPart1(short value)
+        {
+            Value = value;
+        }
+
+        IPAddressPart2* AddPart(short value)
+        {
+            int position = GetPosition(value);
+            if(position>=0)
+                return nextParts.at(position);
+            IPAddressPart2* part =new IPAddressPart2(value);
+            nextParts.push_back(part);
+            position = GetPosition(value);
+            return nextParts.at(position);
+        }
+
+        IPAddressPart2* GetPart(short value)
+        {
+            int position = GetPosition(value);
+            if(position>=0)
+                return nextParts.at(position);
+            IPAddressPart2* part =new IPAddressPart2(256);
+            return part;
+        }
+    };
+
+    //IPv4 address part 0
+    class IPAddressPart0
+    {
+        private:
+        std::vector<IPAddressPart1*> nextParts;
+
+        int GetPosition(short value)
+        {
+            for(int i=0;i<nextParts.size();i++)
+            {
+                if(nextParts.at(i)->Value == value)
+                    return i;
+            }
+            return -1;
+        }
+
+        public:
+        short Value;
+
+        IPAddressPart0(short value)
+        {
+            Value = value;
+        }
+
+        IPAddressPart1* AddPart(short value)
+        {
+            int position = GetPosition(value);
+            if(position>=0)
+                return nextParts.at(position);
+            IPAddressPart1* part =new IPAddressPart1(value);
+            nextParts.push_back(part);
+            position = GetPosition(value);
+            return nextParts.at(position);
+        }
+
+        IPAddressPart1* GetPart(short value)
+        {
+            int position = GetPosition(value);
+            if(position>=0)
+                return nextParts.at(position);
+            IPAddressPart1* part =new IPAddressPart1(256);
+            return part;
+        }
+    };
+
+    //Firewall
+
+    class Firewall
+    {
+        private:
+        std::vector<IPAddressPart0*> nextParts;
+
+        int GetPosition(short value)
+        {
+            for(int i=0;i<nextParts.size();i++)
+            {
+                if(nextParts.at(i)->Value == value)
+                    return i;
+            }
+            return -1;
+        }
+
+        void AddRule(InternalIPAddress address, PacketRule* rule)
+        {
+            IPAddressPart0* part0 = AddPart(address.parts[0]);
+            
+            IPAddressPart1* part1 = part0->AddPart(address.parts[1]);
+            
+            IPAddressPart2* part2 = part1->AddPart(address.parts[2]);
+            
+            IPAddressPart3* part3 = part2->AddPart(address.parts[3],rule);
+            
+        }
+
+        IPAddressPart0* GetPart(short value)
+        {
+            int position = GetPosition(value);
+            if(position>=0)
+                return nextParts.at(position);
+            IPAddressPart0* part =new IPAddressPart0(256);
+            return part;
+        }
+
+        IPAddressPart0* AddPart(short value)
+        {
+            int positon = GetPosition(value);
+            if(positon>=0)
+                return nextParts.at(positon);
+            IPAddressPart0* part =new IPAddressPart0(value);
+            nextParts.push_back(part);
+            nextParts.shrink_to_fit();
+            positon = GetPosition(value);
+            return nextParts.at(positon);
+        }
+
+        Firewall()
+        {
+
+        }
+
+        IPAddressPart3* GetPart3(InternalIPAddress address)
+        {
+            IPAddressPart0* part0 = GetPart(address.parts[0]);
+            if(part0->Value == 256)
+                return new IPAddressPart3(256,new PacketRule(false,false));
+            IPAddressPart1* part1 = part0->GetPart(address.parts[1]);
+            if(part1->Value == 256)
+                return new IPAddressPart3(256,new PacketRule(false,false));
+            IPAddressPart2* part2 = part1->GetPart(address.parts[2]);
+            if(part2->Value == 256)
+                return new IPAddressPart3(256,new PacketRule(false,false));
+            IPAddressPart3* part3 = part2->GetPart(address.parts[3]);
+            if(part3->Value == 256)
+                return new IPAddressPart3(256,new PacketRule(false,false));
+            return part3;
+        }
+
+        public:
+        static Firewall* CreateFirewall(InternalIPAddress addresses[], PacketRule* rules[], int count)
+        {
+            Firewall *firewall = new Firewall();
+            for(int i=0;i<count;i++)
+                firewall->AddRule(addresses[i],rules[i]);
+            return firewall;
+        }
+
+        inline bool AllowIncoming(InternalIPAddress address)
+        {
+            return GetPart3(address)->AllowIncoming();
+        }
+
+        inline bool AllowOutgoing(InternalIPAddress address)
+        {
+            return GetPart3(address)->AllowOutgoing();
+        }
+    };
+
+Firewall* firewall;
+
+Pinger pinger;
+
+
+InternalIPAddress parseIP(String data)
+{
+    int len = data.length();
+    String temp ="";
+    short bytes[4];
+    int count = 0;
+    for(int i=0;i<len;i++)
+    {
+        if(data.charAt(i)!='.')
+            temp.concat(data.charAt(i));
+        else
+        {
+            bytes[count++] = (short)temp.toInt();
+            temp = "";
+        }
+    }
+    bytes[count++] = (short)temp.toInt();
+    return InternalIPAddress(bytes[0],bytes[1],bytes[2],bytes[3]);
+}
+
+bool PingIP(InternalIPAddress address)
+{
+    return pinger.Ping(IPAddress(address.parts[0],address.parts[1],address.parts[2], address.parts[3]));
+}
+
+void loop() {
+
+    delay(1000);
+    while(!Serial.available());
+    String command = Serial.readStringUntil('\n');
+    Serial.flush();
+    if(command.startsWith("0"))
+    {
+        Serial.println("HELLO");
+    }
+    else if(command.startsWith("1"))
+    {
+        while(!Serial.available());
+        String address = Serial.readStringUntil('\n');
+        InternalIPAddress addressValue = parseIP(address);
+        if(firewall->AllowIncoming(addressValue) == true)
+        {
+            if(PingIP(addressValue) == true)
+            {
+                Serial.println("PASSED");
+            }
+            else
+            {
+                Serial.println("FAILED");
+            }
+        }
+        else
+            Serial.println("BLOCKED");
+    }
+    else if(command.startsWith("2"))
+    {
+        while(!Serial.available());
+        String address = Serial.readStringUntil('\n');
+        InternalIPAddress addressValue = parseIP(address);
+        if(firewall->AllowOutgoing(addressValue) == true)
+        {
+            if(PingIP(addressValue) == true)
+            {
+                Serial.println("PASSED");
+            }
+            else
+            {
+                Serial.println("FAILED");
+            }
+        }
+        else
+            Serial.println("BLOCKED");
+    }
+    else
+    {
+        Serial.println("INVALID");
+        Serial.flush();
+    }
+
+}

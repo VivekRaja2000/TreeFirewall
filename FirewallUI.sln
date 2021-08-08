@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "FirewallUI (Package)", "FirewallUI\FirewallUI (Package)\FirewallUI (Package).wapproj", "{50E07284-9725-47A1-A993-DA587A57F2D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirewallUI", "FirewallUI\FirewallUI\FirewallUI.csproj", "{B95256D4-E62E-4BDF-84F6-717BFBA248D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeManager", "FirewallUI\CodeGenerator\CodeManager.csproj", "{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|arm64 = Debug|arm64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|arm64 = Release|arm64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|arm64.ActiveCfg = Debug|arm64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|arm64.Build.0 = Debug|arm64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|arm64.Deploy.0 = Debug|arm64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|x64.ActiveCfg = Debug|x64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|x64.Build.0 = Debug|x64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|x64.Deploy.0 = Debug|x64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|x86.ActiveCfg = Debug|x86
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|x86.Build.0 = Debug|x86
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Debug|x86.Deploy.0 = Debug|x86
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|arm64.ActiveCfg = Release|arm64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|arm64.Build.0 = Release|arm64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|arm64.Deploy.0 = Release|arm64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|x64.ActiveCfg = Release|x64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|x64.Build.0 = Release|x64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|x64.Deploy.0 = Release|x64
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|x86.ActiveCfg = Release|x86
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|x86.Build.0 = Release|x86
+		{50E07284-9725-47A1-A993-DA587A57F2D8}.Release|x86.Deploy.0 = Release|x86
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Debug|arm64.ActiveCfg = Debug|arm64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Debug|arm64.Build.0 = Debug|arm64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Debug|x64.ActiveCfg = Debug|x64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Debug|x64.Build.0 = Debug|x64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Debug|x86.ActiveCfg = Debug|x86
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Debug|x86.Build.0 = Debug|x86
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Release|arm64.ActiveCfg = Release|arm64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Release|arm64.Build.0 = Release|arm64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Release|x64.ActiveCfg = Release|x64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Release|x64.Build.0 = Release|x64
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Release|x86.ActiveCfg = Release|x86
+		{B95256D4-E62E-4BDF-84F6-717BFBA248D9}.Release|x86.Build.0 = Release|x86
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Debug|arm64.Build.0 = Debug|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Debug|x64.Build.0 = Debug|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Release|arm64.ActiveCfg = Release|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Release|arm64.Build.0 = Release|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Release|x64.Build.0 = Release|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{1DB24B09-1DAC-43D6-948A-E2AE714EF7C7}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF5C8DCA-2408-4AD6-88C6-DD27C0DD708A}
+	EndGlobalSection
+EndGlobal
