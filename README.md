@@ -24,3 +24,6 @@ Internet is currently playing major role in all the fields ranging from educatio
 ### Validating a rule which is in Rules List
 
 ![RuleValidaion](https://github.com/VivekRaja2000/TreeFirewall/blob/master/Screenshots/scrshot5.png)
+
+##NOTE
+COPY CodeTemplate.txt TO Documents folder before running application
